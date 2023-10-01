@@ -1,0 +1,50 @@
+import Foundation
+
+enum Choice: String {
+    case rock = "rock"
+    case paper = "paper"
+    case scissors = "scissors"
+}
+
+enum Result {
+    case win, lose, draw
+}
+
+func getUserChoice() -> Choice {
+    print("Escolha: (rock/paper/scissors)")
+    if let userInput = readLine(), let choice = Choice(rawValue: userInput) {
+        return choice
+    } else {
+        print("Entrada inválida. Tente novamente.")
+        return getUserChoice()
+    }
+}
+
+func getComputerChoice() -> Choice {
+    let choices: [Choice] = [.rock, .paper, .scissors]
+    let randomIndex = Int(arc4random_uniform(UInt32(choices.count)))
+    return choices[randomIndex]
+}
+
+func determineWinner(userChoice: Choice, computerChoice: Choice) -> Result {
+    if userChoice == computerChoice {
+        return .draw
+    } else if (userChoice == .rock && computerChoice == .scissors) ||
+              (userChoice == .paper && computerChoice == .rock) ||
+              (userChoice == .scissors && computerChoice == .paper) {
+        return .win
+    } else {
+        return .lose
+    }
+}
+
+func playGame() {
+    let userChoice = getUserChoice()
+    let computerChoice = getComputerChoice()
+
+    print("Você escolheu: \(userChoice.rawValue)")
+    print("O computador escolheu: \(computerChoice.rawValue)")
+
+    let result = determineWinner(userChoice: userChoice, computerChoice: computerChoice)
+
+   
